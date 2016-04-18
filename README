@@ -1,0 +1,12 @@
+[WIP]
+
+C8-ASM
+======
+
+C8-ASM is a Chip8 assembler written in C with help of GNU Flex and GNU Bison.
+The assembler will take valid Chip8 assembly statements and generate the
+correct machine instructions[1].
+
+[1] For now it generates a string that is printed to the stdout stream. This is
+    because it was designed to work with danirod's emulator (using --hex flag).
+    You can find danirod's chip8 emulator here: http://www.danirod.es/chip8/
