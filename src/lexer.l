@@ -35,8 +35,7 @@ IGNORE  {COMMENT}|{BLANK}
 
 SEP     ,
 
-HEX     0x[0-9a-f]{1,3}
-REG     V[0-9a-f]
+HEX     (0x)?[0-9a-f]{1,3}
 
 %%
 
@@ -47,13 +46,6 @@ REG     V[0-9a-f]
     return (HEX);
 }
 
-{REG} {
-    sscanf(&yytext[1], "%x", &yylval.hex);
-
-    yylinepos += strlen(yytext);
-    return (REG);
-}
-
 {IGNORE} {
     yylinepos += strlen(yytext);
 }
@@ -62,6 +54,11 @@ REG     V[0-9a-f]
     yylinepos += strlen(yytext);
 
     return (SEP);
+}
+
+"V" {
+    yylinepos += strlen(yytext);
+    return (V);
 }
 
 "I" {

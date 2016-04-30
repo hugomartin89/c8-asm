@@ -42,8 +42,8 @@
 }
 
 %token <hex>    HEX
-%token <hex>    REG
 %token          I
+%token          V
 %token          DT
 %token          K
 %token          ST
@@ -115,81 +115,81 @@ instruction:
         write_opcode(NNN(0x2, $2));
     }
 |
-    SE REG SEP HEX {
-        write_opcode(XKK(0x3, $2, $4));
+    SE V L_BKT HEX R_BKT SEP HEX {
+        write_opcode(XKK(0x3, $4, $7));
     }
 |
-    SNE REG SEP HEX {
-        write_opcode(XKK(0x4, $2, $4));
+    SNE V L_BKT HEX R_BKT SEP HEX {
+        write_opcode(XKK(0x4, $4, $7));
     }
 |
-    SE REG SEP REG {
-        write_opcode(XYN(0x5, $2, $4, 0x0));
+    SE V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x5, $4, $9, 0x0));
     }
 |
-    LD REG SEP HEX {
-        write_opcode(XKK(0x6, $2, $4));
+    LD V L_BKT HEX R_BKT SEP HEX {
+        write_opcode(XKK(0x6, $4, $7));
     }
 |
-    ADD REG SEP HEX {
-        write_opcode(XKK(0x7, $2, $4));
+    ADD V L_BKT HEX R_BKT SEP HEX {
+        write_opcode(XKK(0x7, $4, $7));
     }
 |
-    LD REG SEP REG {
-        write_opcode(XYN(0x8, $2, $4, 0x0));
+    LD V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x8, $4, $9, 0x0));
     }
 |
-    OR REG SEP REG {
-        write_opcode(XYN(0x8, $2, $4, 0x1));
+    OR V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x8, $4, $9, 0x1));
     }
 |
-    AND REG SEP REG {
-        write_opcode(XYN(0x8, $2, $4, 0x2));
+    AND V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x8, $4, $9, 0x2));
     }
 |
-    XOR REG SEP REG {
-        write_opcode(XYN(0x8, $2, $4, 0x3));
+    XOR V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x8, $4, $9, 0x3));
     }
 |
-    ADD REG SEP REG {
-        write_opcode(XYN(0x8, $2, $4, 0x4));
+    ADD V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x8, $4, $9, 0x4));
     }
 |
-    SUB REG SEP REG {
-        write_opcode(XYN(0x8, $2, $4, 0x5));
+    SUB V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x8, $4, $9, 0x5));
     }
 |
-    SHR REG {
-        write_opcode(XYN(0x8, $2, 0x0, 0x6));
+    SHR V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x8, $4, 0x0, 0x6));
     }
 |
-    SHR REG SEP REG {
-        write_opcode(XYN(0x8, $2, $4, 0x6));
+    SHR V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x8, $4, $9, 0x6));
     }
 |
-    SUBN REG SEP REG {
-        write_opcode(XYN(8, $2, $4, 0x7));
+    SUBN V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(8, $4, $9, 0x7));
     }
 |
-    SHL REG {
-        write_opcode(XYN(0x8, $2, 0, 0x6));
+    SHL V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x8, $4, 0, 0x6));
     }
 |
-    SHL REG SEP REG {
-        write_opcode(XYN(8, $2, $4, 0xe));
+    SHL V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(8, $4, $9, 0xe));
     }
 |
-    SNE REG SEP REG {
-        write_opcode(XYN(0x9, $2, $4, 0x0));
+    SNE V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XYN(0x9, $4, $9, 0x0));
     }
 |
     LD I SEP HEX {
         write_opcode(NNN(0xa, $4));
     }
 |
-    JP REG SEP HEX {
-        if ($2 == 0x0) {
-            write_opcode(NNN(0xb, $4));
+    JP V L_BKT HEX R_BKT SEP HEX {
+        if ($4 == 0x0) {
+            write_opcode(NNN(0xb, $7));
         }
         else {
             yyerror("Syntax error");
@@ -197,56 +197,56 @@ instruction:
         }
     }
 |
-    RND REG SEP HEX {
-        write_opcode(XKK(0xc, $2, $4));
+    RND V L_BKT HEX R_BKT SEP HEX {
+        write_opcode(XKK(0xc, $4, $7));
     }
 |
-    DRW REG SEP REG SEP HEX {
-        write_opcode(XYN(0xd, $2, $4, $6));
+    DRW V L_BKT HEX R_BKT SEP V L_BKT HEX R_BKT SEP HEX {
+        write_opcode(XYN(0xd, $4, $9, $12));
     }
 |
-    SKP REG {
-        write_opcode(XKK(0xe, $2, 0x9e));
+    SKP V L_BKT HEX R_BKT {
+        write_opcode(XKK(0xe, $4, 0x9e));
     }
 |
-    SKNP REG {
-        write_opcode(XKK(0xe, $2, 0xa1));
+    SKNP V L_BKT HEX R_BKT {
+        write_opcode(XKK(0xe, $4, 0xa1));
     }
 |
-    LD REG SEP DT {
-        write_opcode(XKK(0xf, $2, 0x07));
+    LD V L_BKT HEX R_BKT SEP DT {
+        write_opcode(XKK(0xf, $4, 0x07));
     }
 |
-    LD REG SEP K {
-        write_opcode(XKK(0xf, $2, 0x0a));
+    LD V L_BKT HEX R_BKT SEP K {
+        write_opcode(XKK(0xf, $4, 0x0a));
     }
 |
-    LD DT SEP REG {
-        write_opcode(XKK(0xf, $4, 0x15));
+    LD DT SEP V L_BKT HEX R_BKT {
+        write_opcode(XKK(0xf, $6, 0x15));
     }
 |
-    LD ST SEP REG {
-        write_opcode(XKK(0xf, $4, 0x18));
+    LD ST SEP V L_BKT HEX R_BKT {
+        write_opcode(XKK(0xf, $6, 0x18));
     }
 |
-    ADD I SEP REG {
-        write_opcode(XKK(0xf, $4, 0x1e));
+    ADD I SEP V L_BKT HEX R_BKT {
+        write_opcode(XKK(0xf, $6, 0x1e));
     }
 |
-    LD F SEP REG {
-        write_opcode(XKK(0xf, $4, 0x29));
+    LD F SEP V L_BKT HEX R_BKT {
+        write_opcode(XKK(0xf, $6, 0x29));
     }
 |
-    LD B SEP REG {
-        write_opcode(XKK(0xf, $4, 0x33));
+    LD B SEP V L_BKT HEX R_BKT {
+        write_opcode(XKK(0xf, $6, 0x33));
     }
 |
-    LD L_BKT I R_BKT SEP REG {
-        write_opcode(XKK(0xf, $6, 0x55));
+    LD V L_BKT I R_BKT SEP V L_BKT HEX R_BKT {
+        write_opcode(XKK(0xf, $9, 0x55));
     }
 |
-    LD REG SEP L_BKT I R_BKT {
-        write_opcode(XKK(0xf, $2, 0x65));
+    LD V L_BKT HEX R_BKT SEP V L_BKT I R_BKT {
+        write_opcode(XKK(0xf, $4, 0x65));
     }
 |
     SCD HEX {
@@ -273,16 +273,16 @@ instruction:
         write_opcode(SC8(0xf, 0xf));
     }
 |
-    LD HF SEP REG {
-        write_opcode(XKK(0xf, $4, 0x30));
+    LD HF SEP V L_BKT HEX R_BKT {
+        write_opcode(XKK(0xf, $6, 0x30));
     }
 |
-    LD R SEP REG {
-        write_opcode(XKK(0xf, $4, 0x75));
+    LD R SEP V L_BKT HEX R_BKT {
+        write_opcode(XKK(0xf, $6, 0x75));
     }
 |
-    LD REG SEP R {
-        write_opcode(XKK(0xf, $2, 0x85));
+    LD V L_BKT HEX R_BKT SEP R {
+        write_opcode(XKK(0xf, $4, 0x85));
     }
 ;
 
