@@ -245,7 +245,7 @@ instruction:
         write_opcode(XKK(0xf, $9, 0x55));
     }
 |
-    LD V L_BKT HEX R_BKT SEP V L_BKT I R_BKT {
+    LD V L_BKT HEX R_BKT SEP L_BKT I R_BKT {
         write_opcode(XKK(0xf, $4, 0x65));
     }
 |
